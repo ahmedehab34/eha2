@@ -10,10 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      - run: docker build -t ahmedgamil/react-test Dockerfile.dev .
+      - name: Build Docker image
+        run: docker build -t ahmedgamil/react-test -f Dockerfile.dev .
 
-      - run: docker run -e CI=true ahmedgamil/react-test npm run test
+      - name: Run tests
+        run: docker run -e CI=true ahmedgamil/react-test npm run test
